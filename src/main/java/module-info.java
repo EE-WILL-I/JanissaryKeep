@@ -8,4 +8,6 @@ module ru.osmanov.janissarykeep {
 
     opens ru.osmanov.janissarykeep to javafx.fxml;
     exports ru.osmanov.janissarykeep;
+    exports ru.osmanov.janissarykeep.controller;
+    opens ru.osmanov.janissarykeep.controller to javafx.fxml;
 }

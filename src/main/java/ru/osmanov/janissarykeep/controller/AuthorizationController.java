@@ -1,9 +1,10 @@
-package ru.osmanov.janissarykeep;
+package ru.osmanov.janissarykeep.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+/**Тут логика всех кнопок в интерфейсе программы (авторизация)**/
+public class AuthorizationController {
     @FXML
     private Label welcomeText;
 
