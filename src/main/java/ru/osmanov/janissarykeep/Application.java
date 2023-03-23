@@ -16,7 +16,7 @@ public class Application extends javafx.application.Application {
         private Stage stage;
         private User loggedUser;
         private static Application instance;
-        private int sceneWidth, sceneHeight;
+        private int sceneWidth, sceneHeight, sceneMinWidth, sceneMinHeight;
 
         public Application() {
             instance = this;
@@ -65,7 +65,9 @@ public class Application extends javafx.application.Application {
             try {
                 sceneHeight = 450;
                 sceneWidth = 700;
-                replaceSceneContent("views/main-view.fxml");
+                sceneMinHeight = 450;
+                sceneMinWidth = 700;
+                replaceSceneContent("views/main-view.fxml", "JanissaryKeep");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -75,13 +77,15 @@ public class Application extends javafx.application.Application {
             try {
                 sceneHeight = 300;
                 sceneWidth = 400;
-                replaceSceneContent("views/auth-view.fxml");
+                sceneMinHeight = 300;
+                sceneMinWidth = 400;
+                replaceSceneContent("views/auth-view.fxml", "Авторизация");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
-        private Parent replaceSceneContent(String fxml) throws Exception {
+        private Parent replaceSceneContent(String fxml, String title) throws Exception {
             URL resource = Application.class.getResource(fxml);
             if(resource == null) {
                 throw new FileNotFoundException("Scene not found");
@@ -90,7 +94,6 @@ public class Application extends javafx.application.Application {
             Scene scene = stage.getScene();
             if (scene == null) {
                 scene = new Scene(page, sceneWidth, sceneHeight);
-                //scene.getStylesheets().add(Application.class.getResource("demo.css").toExternalForm());
                 stage.setScene(scene);
             } else {
                 stage.getScene().setRoot(page);
@@ -98,6 +101,9 @@ public class Application extends javafx.application.Application {
             stage.sizeToScene();
             stage.setWidth(sceneWidth);
             stage.setHeight(sceneHeight);
+            stage.setMinWidth(sceneMinWidth);
+            stage.setMinHeight(sceneMinHeight);
+            stage.setTitle(title);
             return page;
         }
 }

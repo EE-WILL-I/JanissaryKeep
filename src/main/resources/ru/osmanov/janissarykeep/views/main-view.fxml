@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ru.osmanov.janissarykeep.controller.MainController"
-            prefHeight="400.0" prefWidth="600.0">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-    <VBox alignment="CENTER" spacing="20.0">
-        <Label fx:id="welcomeText" text="Вы авторизировались!"/>
-        <Button text="Выйти" onAction="#onExitButtonClick"/>
-    </VBox>
+<AnchorPane fx:id="ap_app" minHeight="400.0" minWidth="700.0" prefHeight="425.0" prefWidth="757.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.osmanov.janissarykeep.controller.MainController">
+   <AnchorPane fx:id="ap_tabs" layoutX="6.0" layoutY="9.0" minHeight="350.0" minWidth="160.0" prefHeight="406.0" prefWidth="159.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="9.0">
+      <children>
+         <VBox fx:id="vbox_tabs" minHeight="300.0" minWidth="150.0" prefHeight="414.0" prefWidth="169.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+               <Label alignment="CENTER" prefHeight="27.0" prefWidth="169.0" text="Навигация" textAlignment="CENTER">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+               <Button fx:id="btn_tab_profile" mnemonicParsing="false" onAction="#onProfileButtonClick" prefHeight="38.0" prefWidth="173.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;" text="Профиль" />
+               <Button fx:id="btn_tab_storage" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onStorageButtonClick" prefHeight="38.0" prefWidth="173.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;" text="Хранилище" />
+               <Button fx:id="btn_tab_parameters" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#onParametersButtonClick" prefHeight="38.0" prefWidth="173.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px;" text="Параметры" />
+            </children>
+         </VBox>
+         <Label fx:id="lbl_user" alignment="BOTTOM_LEFT" prefHeight="60.0" prefWidth="149.0" text="Имя пользователя" wrapText="true" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+            <font>
+               <Font size="13.0" />
+            </font></Label>
+      </children>
+   </AnchorPane>
+   <AnchorPane fx:id="ap_content" layoutX="170.0" layoutY="9.0" minHeight="350.0" minWidth="500.0" prefHeight="419.0" prefWidth="579.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="9.0">
+      <children>
+          <VBox fx:id="vbox_content" alignment="CENTER" layoutY="-13.0" prefHeight="414.0" prefWidth="556.0" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+              <Label fx:id="welcomeText" text="Вы авторизировались!" />
+              <Button onAction="#onExitButtonClick" text="Выйти" />
+          </VBox>
+      </children>
+   </AnchorPane>
 </AnchorPane>

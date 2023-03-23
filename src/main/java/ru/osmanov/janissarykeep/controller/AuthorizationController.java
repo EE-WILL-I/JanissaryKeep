@@ -16,7 +16,11 @@ public class AuthorizationController {
 
     @FXML
     protected void onLoginButtonClick() {
-        welcomeText.setText(String.format("Login: %s, Password: %s", fieldLogin.getText(), fieldPassword.getText()));
-        Application.getInstance().gotoMain();
+        if(Application.getInstance().userLogging(fieldLogin.getText(), fieldPassword.getText())) {
+            welcomeText.setText(String.format("Login: %s, Password: %s", fieldLogin.getText(), fieldPassword.getText()));
+            Application.getInstance().gotoMain();
+        } else {
+            welcomeText.setText("Неверный логин или пароль");
+        }
     }
 }
