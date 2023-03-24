@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import ru.osmanov.janissarykeep.Application;
 
-/**Тут логика всех кнопок в интерфейсе программы (авторизация)**/
+/**Тут логика кнопок в интерфейсе программы в окне авторизация**/
 public class AuthorizationController {
     @FXML
     private Label welcomeText;
@@ -17,7 +17,7 @@ public class AuthorizationController {
     @FXML
     protected void onLoginButtonClick() {
         if(Application.getInstance().userLogging(fieldLogin.getText(), fieldPassword.getText())) {
-            welcomeText.setText(String.format("Login: %s, Password: %s", fieldLogin.getText(), fieldPassword.getText()));
+            System.out.printf("Login: %s, Password: %s%n", fieldLogin.getText(), fieldPassword.getText());
             Application.getInstance().gotoMain();
         } else {
             welcomeText.setText("Неверный логин или пароль");

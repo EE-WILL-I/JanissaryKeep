@@ -6,6 +6,7 @@ module ru.osmanov.janissarykeep {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires java.logging;
+    requires mongo.java.driver;
 
     opens ru.osmanov.janissarykeep to javafx.fxml;
     exports ru.osmanov.janissarykeep;
