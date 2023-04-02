@@ -7,11 +7,18 @@ import org.bson.types.ObjectId;
 public class DocumentBuilder {
     private final Document document;
 
-    public DocumentBuilder() {
+    public DocumentBuilder(String name) {
         document = new Document("_id", new ObjectId());
+        document.append("userId", User.get().getId());
+        document.append("name", name);
     }
-    public void addData(String data) {
-        document.append("data:", data);
+    public DocumentBuilder addProperty(String key, Object value) {
+        document.append(key, value);
+        return this;
+    }
+    public DocumentBuilder addData(String data) {
+        document.append("data", data);
+        return this;
     }
     public Document getDocument() { return document; }
 }

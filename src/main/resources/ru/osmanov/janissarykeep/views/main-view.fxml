@@ -29,7 +29,11 @@
                             <Label fx:id="lbl_storage_title" text="Ваше хранилище" />
                             <VBox fx:id="vbox_storage_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                               <children>
+                                 <Label fx:id="lbl_file_names" text="Label" />
                                    <Button onAction="#onStorageCheckButtonClick" text="Проверить хранилище" />
+                                 <Label text="Введите имя файла:" />
+                                 <TextField fx:id="in_doc_name" prefHeight="25.0" prefWidth="167.0" />
+                                 <Button mnemonicParsing="false" onAction="#onStorageLoadButtonClick" text="Button" />
                               </children>
                             </VBox>
                         </children>
@@ -43,7 +47,8 @@
                             <Label fx:id="lbl_create_title" text="Создать и сохранить зашифрованный документ" />
                             <VBox fx:id="vbox_create_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                               <children>
-                                   <Button onAction="#onStorageCheckButtonClick" text="Проверить хранилище" />
+                                 <Label fx:id="lbl_file_name" text="Label" />
+                                   <Button onAction="#onLoadFileButtonClick" text="Загрузить файл" />
                               </children>
                             </VBox>
                         </children>

@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.osmanov.janissarykeep.database.Authenticator;
+import ru.osmanov.janissarykeep.database.Connector;
+import ru.osmanov.janissarykeep.database.DocumentManager;
 import ru.osmanov.janissarykeep.database.User;
 
 import java.io.FileNotFoundException;
@@ -15,6 +17,7 @@ import java.net.URL;
 public class Application extends javafx.application.Application {
         private Stage stage;
         private User loggedUser;
+        private Connector databaseConnector;
         private static Application instance;
         private int sceneWidth, sceneHeight, sceneMinWidth, sceneMinHeight;
 
@@ -34,6 +37,7 @@ public class Application extends javafx.application.Application {
         /**Название говорит само за себя**/
         public void start(Stage primaryStage) {
             try {
+                connectToDatabase();
                 stage = primaryStage;
                 gotoLogin();
                 primaryStage.show();
@@ -42,13 +46,25 @@ public class Application extends javafx.application.Application {
             }
         }
 
-        public User getLoggedUser() {
+    private void connectToDatabase() {
+        databaseConnector = new Connector("mongodb://localhost:27017/", "osmanov");
+        databaseConnector.printDatabases();
+        Authenticator.init();
+        DocumentManager.init();
+    }
+
+    public Connector getDatabaseConnector() {
+            return databaseConnector;
+    }
+
+    public User getLoggedUser() {
             return loggedUser;
         }
 
-        public boolean userLogging(String userId, String password){
-            if (Authenticator.validate(userId, password)) {
-                loggedUser = User.get(userId);
+        public boolean userLogging(String userId, String password) {
+            User user = Authenticator.validate(userId, password);
+            if (user != null) {
+                loggedUser = user;
                 gotoMain();
                 return true;
             } else {
@@ -83,6 +99,10 @@ public class Application extends javafx.application.Application {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+
+        public Stage getStage() {
+            return stage;
         }
 
         private Parent replaceSceneContent(String fxml, String title) throws Exception {
