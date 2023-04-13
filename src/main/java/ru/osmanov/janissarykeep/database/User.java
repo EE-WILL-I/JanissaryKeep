@@ -1,5 +1,7 @@
 package ru.osmanov.janissarykeep.database;
 
+import org.bson.Document;
+import org.bson.types.ObjectId;
 import ru.osmanov.janissarykeep.Application;
 
 public class User {

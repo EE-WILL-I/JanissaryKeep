@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Decryptor {
 
-    public static File DecryptFile(String encodedBytesString, String outputPath) throws IOException {
+    public static File decryptFile(String encodedBytesString, String outputPath) throws IOException {
         File outFile = new File(outputPath);
         if(!outFile.exists()) {
             outFile.createNewFile();

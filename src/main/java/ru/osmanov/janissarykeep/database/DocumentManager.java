@@ -11,6 +11,7 @@ import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 public class DocumentManager {
+    public static String DOWNLOAD_PATH = "C:/Users/Bogdan/IdeaProjects/JanissaryKeep/temp";
     private static MongoCollection<Document> collection;
 
     public static void init() {
@@ -35,5 +36,10 @@ public class DocumentManager {
     public static Document getDocumentByName(String name) {
         Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
         return collection.find(filter).first();
+    }
+
+    public static boolean deleteDocument(String name) {
+        Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
+        return collection.deleteOne(filter).wasAcknowledged();
     }
 }

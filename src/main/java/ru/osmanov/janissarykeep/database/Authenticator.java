@@ -36,4 +36,9 @@ public class Authenticator {
         }
         return true;
     }
+
+    public static boolean delete(String userId) {
+        Bson filter = eq("userId", User.get().getId());
+        return collection.deleteOne(filter).wasAcknowledged();
+    }
 }

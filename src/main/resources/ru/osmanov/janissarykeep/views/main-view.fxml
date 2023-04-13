@@ -16,6 +16,7 @@
                               <children>
                                    <Label fx:id="lbl_profile_title" text="Вы авторизировались!" />
                                    <Button onAction="#onExitButtonClick" text="Выйти" />
+                                 <Button layoutX="353.0" layoutY="199.0" onAction="#onDeleteProfileButtonClick" text="Удалить профиль" />
                               </children>
                             </VBox>
                         </children>
@@ -26,16 +27,12 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Label fx:id="lbl_storage_title" text="Ваше хранилище" />
-                            <VBox fx:id="vbox_storage_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-                              <children>
-                                 <Label fx:id="lbl_file_names" text="Label" />
-                                   <Button onAction="#onStorageCheckButtonClick" text="Проверить хранилище" />
-                                 <Label text="Введите имя файла:" />
-                                 <TextField fx:id="in_doc_name" prefHeight="25.0" prefWidth="167.0" />
-                                 <Button mnemonicParsing="false" onAction="#onStorageLoadButtonClick" text="Button" />
-                              </children>
-                            </VBox>
+                            <Label fx:id="lbl_storage_title" text="Ваше хранилище" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                             <Button onAction="#onStorageCheckButtonClick" prefHeight="7.0" prefWidth="142.0" text="Проверить хранилище" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="7.0" />
+                           <Label text="Введите имя файла:" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="10.0" />
+                           <TextField fx:id="in_doc_name" prefHeight="25.0" prefWidth="167.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="8.0" />
+                           <Button mnemonicParsing="false" onAction="#clearStorageDocuments" prefHeight="25.0" prefWidth="86.0" text="Очистить" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="16.0" />
+                            <VBox fx:id="vbox_storage_content" alignment="CENTER" layoutY="29.0" prefHeight="342.0" prefWidth="737.0" spacing="20.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
                         </children>
                   </AnchorPane>
                </content>
@@ -44,10 +41,10 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Label fx:id="lbl_create_title" text="Создать и сохранить зашифрованный документ" />
-                            <VBox fx:id="vbox_create_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                            <Label fx:id="lbl_create_title" text="Создать и сохранить зашифрованный документ" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                            <VBox fx:id="vbox_create_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
                               <children>
-                                 <Label fx:id="lbl_file_name" text="Label" />
+                                 <Label fx:id="lbl_file_name" text="Выберите файл для шифрования" />
                                    <Button onAction="#onLoadFileButtonClick" text="Загрузить файл" />
                               </children>
                             </VBox>
@@ -59,8 +56,8 @@
                 <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Label fx:id="lbl_parameters_title" text="Настройки" />
-                            <VBox fx:id="vbox_parameters_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
+                            <Label fx:id="lbl_parameters_title" text="Настройки" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                            <VBox fx:id="vbox_parameters_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
                               <children>
                                    <Button onAction="#onParametersCheckButtonClick" text="Настроить что-то" />
                               </children>
@@ -71,7 +68,7 @@
              </Tab>
            </tabs>
          </TabPane>
-         <Label fx:id="lbl_user" layoutX="14.0" layoutY="383.0" prefHeight="17.0" prefWidth="215.0" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" />
+         <Label fx:id="lbl_user" layoutX="14.0" layoutY="383.0" prefHeight="17.0" prefWidth="494.0" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" />
       </children>
    </AnchorPane>
 </AnchorPane>
