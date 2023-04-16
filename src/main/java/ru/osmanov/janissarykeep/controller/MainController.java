@@ -1,8 +1,7 @@
 package ru.osmanov.janissarykeep.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.bson.Document;
@@ -11,10 +10,10 @@ import ru.osmanov.janissarykeep.database.Authenticator;
 import ru.osmanov.janissarykeep.database.User;
 import ru.osmanov.janissarykeep.ui.UIDocumentElement;
 import ru.osmanov.janissarykeep.database.DocumentManager;
-import ru.osmanov.janissarykeep.encryption.Decryptor;
 import ru.osmanov.janissarykeep.encryption.Encryptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +21,26 @@ import java.util.List;
 public class MainController {
     public static MainController instance;
     @FXML
-    protected Label lbl_user, lbl_file_name, lbl_file_names;
+    protected Label lbl_user, lbl_file_name;
     @FXML
     private TextField in_doc_name;
     @FXML
-    private VBox vbox_storage_content;
+    private VBox vbox_storage_content, vbox_create_content;
+    @FXML
+    private Button btn_upload_file;
     private FileChooser storageFileChooser;
     private List<UIDocumentElement> documents;
+    private TextInputDialog inputDialog;
 
     public void initialize() {
         documents = new ArrayList<>();
         storageFileChooser = new FileChooser();
         storageFileChooser.setTitle("Выберите файл для шифрования");
+        inputDialog = new TextInputDialog();
+        inputDialog.setTitle("Обновить пароль");
         String userId = Application.getInstance().getLoggedUser().getId();
         lbl_user.setText(userId);
+        resetCreateTab();
         instance = this;
     }
 
@@ -52,6 +57,55 @@ public class MainController {
         return storageFileChooser.showSaveDialog(Application.getInstance().getStage());
     }
 
+    private void resetCreateTab() {
+        vbox_create_content.getChildren().clear();
+        lbl_file_name.setText("Выберите файл");
+        vbox_create_content.getChildren().add(lbl_file_name);
+        vbox_create_content.getChildren().add(btn_upload_file);
+    }
+
+    private void initCreateTab(File file) {
+        vbox_create_content.getChildren().clear();
+        lbl_file_name.setText("файл: " + file.getName());
+        vbox_create_content.getChildren().add(lbl_file_name);
+
+        Label tfLabel = new Label("Имя документа:");
+        TextField docNameField = new TextField(file.getName());
+        vbox_create_content.getChildren().add(tfLabel);
+        vbox_create_content.getChildren().add(docNameField);
+
+        Label keyLabel = new Label("Секретный ключ документа:");
+        TextField keyField = new TextField();
+        vbox_create_content.getChildren().add(keyLabel);
+        vbox_create_content.getChildren().add(keyField);
+
+        Button uploadBtn = new Button("Загрузить документ в БД");
+        uploadBtn.setOnAction(event -> {
+            if(docNameField.getText().isEmpty() || !docNameField.getText().matches("^.*\\.[^\\\\]+$")) {
+                displayInfo("Укажите имя и формат файла");
+                return;
+            }
+            if(keyField.getText().isEmpty() || keyField.getText().length() < 8) {
+                displayInfo("Ключ должен содержать не менее 8 знаков");
+                return;
+            }
+            try {
+                Document encDoc = Encryptor.encryptDocument(file, docNameField.getText(), keyField.getText());
+                DocumentManager.uploadDocumentToDatabase(encDoc);
+            } catch (Exception e) {
+                e.printStackTrace();
+                displayInfo(e.getMessage());
+            }
+            displayInfo(file.getName() + " - файл зашифрован и загружен в хранилище");
+            resetCreateTab();
+        });
+        vbox_create_content.getChildren().add(uploadBtn);
+
+        Button cancelBtn = new Button("Отменить");
+        cancelBtn.setOnAction(event ->  resetCreateTab());
+        vbox_create_content.getChildren().add(cancelBtn);
+    }
+
     @FXML
     protected void onExitButtonClick() {
         Application.getInstance().gotoLogin();
@@ -64,9 +118,14 @@ public class MainController {
 
     @FXML
     protected void onStorageCheckButtonClick() {
+        onStorageCheckButtonClick("");
+    }
+
+    protected void onStorageCheckButtonClick(String filter) {
         ArrayList<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
         StringBuilder builder = new StringBuilder("Документы:\n");
         for(Document doc : userDocuments) {
+            if(!filter.isEmpty() && !doc.get("name").toString().contains(filter)) continue;
             documents.add(new UIDocumentElement(doc, vbox_storage_content));
             builder.append("Name: ").append(doc.get("name")).append("\n");
         }
@@ -82,18 +141,60 @@ public class MainController {
     }
 
     @FXML
+    protected void deleteStorageDocuments() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Подтверждение");
+        alert.setHeaderText("Удалить все документы из хранилища?");
+        alert.showAndWait();
+        if(alert.getResult() == ButtonType.OK) {
+            List<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
+            for (Document doc : userDocuments) {
+                DocumentManager.deleteDocument(doc);
+            }
+            clearStorageDocuments();
+        }
+    }
+
+    @FXML
     protected void onLoadFileButtonClick() {
         try {
             storageFileChooser.setTitle("Загрузить файл");
             File file = storageFileChooser.showOpenDialog(Application.getInstance().getStage());
-            String encSrt = Encryptor.fileToByteArray(file);
-            Document encDoc = Encryptor.encryptDocument(encSrt, file.getName());
-            DocumentManager.uploadDocumentToDatabase(encDoc);
-            displayInfo(file.getName() + " - файл зашифрован и загружен в хранилище");
+            initCreateTab(file);
         } catch (Exception e) {
             e.printStackTrace();
-            displayInfo(e.getMessage());
+            displayInfo("Не удалось открывть файл: " + e.getMessage());
         }
+    }
+
+    @FXML
+    protected void onUpdateProfileButtonClick() {
+        inputDialog.setHeaderText("Введите старый пароль");
+        inputDialog.setContentText("");
+        inputDialog.showAndWait();
+        if (Authenticator.validate(User.get().getId(), inputDialog.getResult()) != null) {
+            inputDialog.setHeaderText("Введите новый пароль");
+            inputDialog.setContentText("");
+            inputDialog.showAndWait();
+            String newPassword = inputDialog.getResult();
+            if (!Authenticator.validatePassword(newPassword)) {
+                displayInfo("Пароль слишком простой.");
+                return;
+            }
+            if (Authenticator.update(User.get().getId(), newPassword))
+                displayInfo("Пароль обновлен");
+            else
+                displayInfo("Неизвестная ошибка");
+        } else {
+            displayInfo("Неверный пароль");
+        }
+    }
+
+    @FXML
+    protected void OnFilterChanged() {
+        String filter = in_doc_name.getText();
+        clearStorageDocuments();
+        onStorageCheckButtonClick(filter);
     }
 
     @FXML

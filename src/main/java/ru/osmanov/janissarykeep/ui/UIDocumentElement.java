@@ -3,6 +3,7 @@ package ru.osmanov.janissarykeep.ui;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.bson.Document;
@@ -19,6 +20,7 @@ public class UIDocumentElement {
     private final String documentName;
     private final VBox parentContainer;
     private final HBox container;
+    private TextInputDialog inputDialog;
     private final float widthTotal = 645, height = 20, downloadBtnWidth = 80, deleteBtnWidth = 70, dateLabelWidth = 160;
 
     public UIDocumentElement(Document document, VBox parent) {
@@ -51,6 +53,10 @@ public class UIDocumentElement {
         container.getChildren().add(deleteBtn);
 
         parentContainer.getChildren().add(container);
+
+        inputDialog = new TextInputDialog();
+        inputDialog.setTitle("Ключ");
+        inputDialog.setHeaderText("Ведите ключ к документу");
     }
 
     public void loadDocument() {
@@ -62,7 +68,12 @@ public class UIDocumentElement {
                 outputFile = MainController.instance.showSaveDialog(name);
                 if(outputFile == null)
                     throw new RuntimeException("Путь не выбран.");
-                Decryptor.decryptFile(document.get("data").toString(), outputFile);
+                inputDialog.setContentText("");
+                inputDialog.showAndWait();
+                String key = inputDialog.getResult();
+                if(key == null || key.length() < 8)
+                    throw new IllegalArgumentException("Неверный формат ключа");
+                Decryptor.decryptDocument(document, key, outputFile);
             } catch (Exception e) {
                 MainController.instance.displayInfo(e.getMessage());
                 return;

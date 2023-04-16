@@ -124,6 +124,7 @@ public class Application extends javafx.application.Application {
             stage.setMinWidth(sceneMinWidth);
             stage.setMinHeight(sceneMinHeight);
             stage.setTitle(title);
+            stage.setResizable(false);
             return page;
         }
 }

@@ -32,7 +32,7 @@ public class AuthorizationController {
             if(Authenticator.create(fieldLogin.getText(), fieldPassword.getText())) {
                 welcomeText.setText("Профиль успешно создан");
             } else {
-                welcomeText.setText("Ошибка при создании профиля. Проверьте соединение.");
+                welcomeText.setText("Пароль слишком слабый");
             }
         }
     }
