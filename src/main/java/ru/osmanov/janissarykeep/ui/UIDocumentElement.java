@@ -1,61 +1,76 @@
 package ru.osmanov.janissarykeep.ui;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.bson.Document;
 import ru.osmanov.janissarykeep.controller.MainController;
+import ru.osmanov.janissarykeep.database.DocumentBuilder;
 import ru.osmanov.janissarykeep.database.DocumentManager;
 import ru.osmanov.janissarykeep.encryption.Decryptor;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 public class UIDocumentElement {
     private final String documentName;
     private final VBox parentContainer;
     private final HBox container;
-    private final float downloadBtnWidth = 30, deleteBtnWidth = 30;
+    private final float widthTotal = 645, height = 20, downloadBtnWidth = 80, deleteBtnWidth = 70, dateLabelWidth = 160;
 
-    public UIDocumentElement(String document, VBox parent) {
-        documentName = document;
+    public UIDocumentElement(Document document, VBox parent) {
+        documentName = document.get("name").toString();
+        long dateStamp = Long.parseLong(document.get("dtm").toString());
+        Date date = new Date(dateStamp);
         parentContainer = parent;
         container = new HBox();
-        container.setMinWidth(parentContainer.getWidth());
-        container.setMinHeight(20);
+        container.setMinWidth(widthTotal);
+        container.setMinHeight(height);
+        container.setSpacing(10);
 
         Label label = new Label(documentName);
-        label.setMinWidth(parentContainer.getWidth() - downloadBtnWidth - deleteBtnWidth);
+        label.setMinWidth(parentContainer.getMaxWidth() - downloadBtnWidth - deleteBtnWidth - dateLabelWidth);
 
-        Button downloadBtn = new Button("^");
+        Label dateLabel = new Label(date.toString());
+        dateLabel.setMinWidth(dateLabelWidth);
+
+        Button downloadBtn = new Button("Загрузить");
         downloadBtn.setOnAction(event -> loadDocument());
         downloadBtn.setMaxWidth(downloadBtnWidth);
 
-        Button deleteBtn = new Button("x");
+        Button deleteBtn = new Button("Удалить");
         deleteBtn.setOnAction(event -> deleteSelf());
         deleteBtn.setMinWidth(deleteBtnWidth);
 
         container.getChildren().add(label);
+        container.getChildren().add(dateLabel);
         container.getChildren().add(downloadBtn);
         container.getChildren().add(deleteBtn);
 
         parentContainer.getChildren().add(container);
     }
 
-    public Document loadDocument() {
+    public void loadDocument() {
         Document document = DocumentManager.getDocumentByName(documentName);
+        File outputFile;
         if (document != null) {
             try {
-                Decryptor.decryptFile(document.get("data").toString(), DocumentManager.DOWNLOAD_PATH + "/" + documentName);
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to download document." + e.getMessage());
+                String name = document.get("name").toString();
+                outputFile = MainController.instance.showSaveDialog(name);
+                if(outputFile == null)
+                    throw new RuntimeException("Путь не выбран.");
+                Decryptor.decryptFile(document.get("data").toString(), outputFile);
+            } catch (Exception e) {
+                MainController.instance.displayInfo(e.getMessage());
+                return;
             }
-            String info = "Document " + documentName + " is downloaded to " + DocumentManager.DOWNLOAD_PATH;
+            String info = "Документ " + documentName + " сохранен в " + outputFile;
             MainController.instance.displayInfo(info);
             System.out.println(info);
-            return document;
         }
-        return null;
     }
 
     public void removeFromList() {
@@ -65,7 +80,7 @@ public class UIDocumentElement {
     public void deleteSelf() {
         DocumentManager.deleteDocument(documentName);
         removeFromList();
-        String info = "Document " + documentName + " is deleted from database";
+        String info = "Докумен " + documentName + " был удален из БД";
         MainController.instance.displayInfo(info);
         System.out.println(info);
     }

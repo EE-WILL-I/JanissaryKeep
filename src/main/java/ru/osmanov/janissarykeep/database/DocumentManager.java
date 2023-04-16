@@ -42,4 +42,10 @@ public class DocumentManager {
         Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
         return collection.deleteOne(filter).wasAcknowledged();
     }
+
+    public static boolean deleteDocument(Document document) {
+        String name = document.get("name").toString();
+        Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
+        return collection.deleteOne(filter).wasAcknowledged();
+    }
 }

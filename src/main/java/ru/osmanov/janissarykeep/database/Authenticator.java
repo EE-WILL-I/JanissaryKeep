@@ -4,6 +4,9 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import ru.osmanov.janissarykeep.Application;
+
+import java.util.List;
+
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
@@ -38,7 +41,11 @@ public class Authenticator {
     }
 
     public static boolean delete(String userId) {
-        Bson filter = eq("userId", User.get().getId());
+        Bson filter = eq("userId", userId);
+        List<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
+        for(Document doc : userDocuments) {
+            DocumentManager.deleteDocument(doc);
+        }
         return collection.deleteOne(filter).wasAcknowledged();
     }
 }

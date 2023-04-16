@@ -43,6 +43,15 @@ public class MainController {
         lbl_user.setText(text);
     }
 
+    public File showSaveDialog(String name) {
+        storageFileChooser.setTitle("Созранить файл");
+        String ext = name.split("\\.")[1];
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Source file format", "*."+ext);
+        storageFileChooser.getExtensionFilters().add(extFilter);
+        storageFileChooser.setInitialFileName(name);
+        return storageFileChooser.showSaveDialog(Application.getInstance().getStage());
+    }
+
     @FXML
     protected void onExitButtonClick() {
         Application.getInstance().gotoLogin();
@@ -56,12 +65,12 @@ public class MainController {
     @FXML
     protected void onStorageCheckButtonClick() {
         ArrayList<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
-        StringBuilder builder = new StringBuilder("Documents:\n");
+        StringBuilder builder = new StringBuilder("Документы:\n");
         for(Document doc : userDocuments) {
-            documents.add(new UIDocumentElement(doc.get("name").toString(), vbox_storage_content));
+            documents.add(new UIDocumentElement(doc, vbox_storage_content));
             builder.append("Name: ").append(doc.get("name")).append("\n");
         }
-        displayInfo(builder.toString());
+        displayInfo(User.get().getId());
         System.out.println(builder);
     }
 
@@ -75,6 +84,7 @@ public class MainController {
     @FXML
     protected void onLoadFileButtonClick() {
         try {
+            storageFileChooser.setTitle("Загрузить файл");
             File file = storageFileChooser.showOpenDialog(Application.getInstance().getStage());
             String encSrt = Encryptor.fileToByteArray(file);
             Document encDoc = Encryptor.encryptDocument(encSrt, file.getName());
@@ -87,30 +97,13 @@ public class MainController {
     }
 
     @FXML
-    protected void onStorageLoadButtonClick() {
-        String docName = in_doc_name.getText();
-        try {
-            if (!docName.isEmpty()) {
-                Document document = DocumentManager.getDocumentByName(docName);
-                if (document != null) {
-                    Decryptor.decryptFile(document.get("data").toString(), DocumentManager.DOWNLOAD_PATH + "/" + docName);
-                    lbl_file_names.setText("Документ " + docName + " скачан в " + DocumentManager.DOWNLOAD_PATH);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            lbl_file_names.setText(e.getMessage());
-        }
-    }
-
-    @FXML
     protected void onDeleteProfileButtonClick() {
         if(Authenticator.delete(User.get().getId())) {
             onExitButtonClick();
-            displayInfo("Профиль удален");
             System.out.println("Profile deleted");
         } else {
             displayInfo("Ошибка. Проверьте соединение.");
+            System.out.println("Profile was not deleted");
         }
     }
 }

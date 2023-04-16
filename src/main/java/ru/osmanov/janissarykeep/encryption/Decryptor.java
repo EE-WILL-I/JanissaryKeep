@@ -8,17 +8,16 @@ import java.io.IOException;
 
 public class Decryptor {
 
-    public static File decryptFile(String encodedBytesString, String outputPath) throws IOException {
-        File outFile = new File(outputPath);
+    public static File decryptFile(String encodedBytesString, File outFile) throws IOException {
         if(!outFile.exists()) {
             outFile.createNewFile();
         }
         if(outFile.isFile() && outFile.canWrite()) {
-            FileOutputStream fos = new FileOutputStream(outputPath);
+            FileOutputStream fos = new FileOutputStream(outFile);
             fos.write(Base64.decode(encodedBytesString));
             fos.close();
             return outFile;
         }
-        throw new IOException("Can't write to:" + outputPath);
+        throw new IOException("Can't write to:" + outFile.getAbsolutePath());
     }
 }

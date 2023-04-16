@@ -32,7 +32,15 @@
                            <Label text="Введите имя файла:" AnchorPane.leftAnchor="320.0" AnchorPane.topAnchor="10.0" />
                            <TextField fx:id="in_doc_name" prefHeight="25.0" prefWidth="167.0" AnchorPane.leftAnchor="450.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="8.0" />
                            <Button mnemonicParsing="false" onAction="#clearStorageDocuments" prefHeight="25.0" prefWidth="86.0" text="Очистить" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="16.0" />
-                            <VBox fx:id="vbox_storage_content" alignment="CENTER" layoutY="29.0" prefHeight="342.0" prefWidth="737.0" spacing="20.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+                           <ScrollPane maxHeight="1.7976931348623157E308" prefWidth="735.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
+                             <content>
+                               <AnchorPane maxHeight="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefWidth="645.0">
+                                    <children>
+                                        <VBox fx:id="vbox_storage_content" alignment="CENTER" layoutX="1.0" maxHeight="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                                    </children>
+                                 </AnchorPane>
+                             </content>
+                           </ScrollPane>
                         </children>
                   </AnchorPane>
                </content>
