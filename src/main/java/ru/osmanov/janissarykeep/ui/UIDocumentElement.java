@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ Это для отображения документа в интерфейсе в программе
+ * **/
 public class UIDocumentElement {
     private final String documentName;
     private final VBox parentContainer;
@@ -59,6 +62,7 @@ public class UIDocumentElement {
         inputDialog.setHeaderText("Ведите ключ к документу");
     }
 
+    //кнопка скачать документ
     public void loadDocument() {
         Document document = DocumentManager.getDocumentByName(documentName);
         File outputFile;
@@ -88,6 +92,7 @@ public class UIDocumentElement {
         parentContainer.getChildren().remove(container);
     }
 
+    //кнопка удалить документ
     public void deleteSelf() {
         DocumentManager.deleteDocument(documentName);
         removeFromList();

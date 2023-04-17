@@ -6,6 +6,9 @@ import org.bson.types.ObjectId;
 
 import java.util.Date;
 
+/**
+ Класс для создания документов в БД (в документе хранятся данные о зашифрованном файле и сам файл)
+ * **/
 public class DocumentBuilder {
     private final Document document;
 

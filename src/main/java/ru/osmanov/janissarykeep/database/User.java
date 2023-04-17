@@ -4,6 +4,9 @@ import org.bson.Document;
 import org.bson.types.ObjectId;
 import ru.osmanov.janissarykeep.Application;
 
+/**
+ * Класс с данными о пользователе
+ * **/
 public class User {
     private String id;
     public User(String id) {

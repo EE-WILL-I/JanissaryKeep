@@ -7,12 +7,13 @@ import ru.osmanov.janissarykeep.database.DocumentBuilder;
 import javax.crypto.Cipher;
 import java.io.*;
 
-/*
+/**
+Шифрование проходит тута
 Алгоритм: AES
 https://coderlessons.com/articles/java/shifrovanie-i-deshifrovanie-aes-v-java-rezhim-cbc
 Режим алгоритма: CBC — Cipher Block Chaining (Режим сцепления блоков шифротекста)
 https://ru.wikipedia.org/wiki/Режим_сцепления_блоков_шифротекста
-* */
+**/
 public class Encryptor {
     //файл в массив байтов
     private static byte[] fileToByteArray(File file) throws IOException {

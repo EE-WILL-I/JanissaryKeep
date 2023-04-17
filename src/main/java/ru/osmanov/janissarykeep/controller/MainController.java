@@ -32,6 +32,7 @@ public class MainController {
     private List<UIDocumentElement> documents;
     private TextInputDialog inputDialog;
 
+    //старт
     public void initialize() {
         documents = new ArrayList<>();
         storageFileChooser = new FileChooser();
@@ -44,10 +45,12 @@ public class MainController {
         instance = this;
     }
 
+    //вывод инфы в углу окна
     public void displayInfo(String text) {
         lbl_user.setText(text);
     }
 
+    //сохранить файл?
     public File showSaveDialog(String name) {
         storageFileChooser.setTitle("Созранить файл");
         String ext = name.split("\\.")[1];
@@ -57,6 +60,7 @@ public class MainController {
         return storageFileChooser.showSaveDialog(Application.getInstance().getStage());
     }
 
+    //отмена загрузки файла
     private void resetCreateTab() {
         vbox_create_content.getChildren().clear();
         lbl_file_name.setText("Выберите файл");
@@ -64,6 +68,7 @@ public class MainController {
         vbox_create_content.getChildren().add(btn_upload_file);
     }
 
+    //загрузить файл в БД
     private void initCreateTab(File file) {
         vbox_create_content.getChildren().clear();
         lbl_file_name.setText("файл: " + file.getName());
@@ -106,14 +111,10 @@ public class MainController {
         vbox_create_content.getChildren().add(cancelBtn);
     }
 
+    //выход
     @FXML
     protected void onExitButtonClick() {
         Application.getInstance().gotoLogin();
-    }
-
-    @FXML
-    protected void onParametersCheckButtonClick() {
-        System.out.println("param btn");
     }
 
     @FXML
@@ -121,6 +122,7 @@ public class MainController {
         onStorageCheckButtonClick("");
     }
 
+    //проверить хранилище
     protected void onStorageCheckButtonClick(String filter) {
         ArrayList<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
         StringBuilder builder = new StringBuilder("Документы:\n");
@@ -133,6 +135,7 @@ public class MainController {
         System.out.println(builder);
     }
 
+    //скрыть документы
     @FXML
     protected void clearStorageDocuments() {
         for(UIDocumentElement uiDocumentElement : documents) {
@@ -140,6 +143,7 @@ public class MainController {
         }
     }
 
+    //удалить все к херам
     @FXML
     protected void deleteStorageDocuments() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -155,6 +159,7 @@ public class MainController {
         }
     }
 
+    //выбрать и загрузить файл в БД
     @FXML
     protected void onLoadFileButtonClick() {
         try {
@@ -167,6 +172,7 @@ public class MainController {
         }
     }
 
+    //смена пароля
     @FXML
     protected void onUpdateProfileButtonClick() {
         inputDialog.setHeaderText("Введите старый пароль");
@@ -190,6 +196,7 @@ public class MainController {
         }
     }
 
+    //фильтрация файлов
     @FXML
     protected void OnFilterChanged() {
         String filter = in_doc_name.getText();
@@ -197,6 +204,7 @@ public class MainController {
         onStorageCheckButtonClick(filter);
     }
 
+    //удалиться
     @FXML
     protected void onDeleteProfileButtonClick() {
         if(Authenticator.delete(User.get().getId())) {

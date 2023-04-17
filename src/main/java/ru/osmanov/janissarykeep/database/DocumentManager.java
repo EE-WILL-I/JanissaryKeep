@@ -10,14 +10,19 @@ import java.util.ArrayList;
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ Класс для работы с документами в БД (в документе хранятся данные о зашифрованном файле и сам файл)
+ **/
 public class DocumentManager {
-    public static String DOWNLOAD_PATH = "C:/Users/Bogdan/IdeaProjects/JanissaryKeep/temp";
+    //коллекция в БД с докуменнтами
     private static MongoCollection<Document> collection;
 
+    //старт
     public static void init() {
         collection = Application.getInstance().getDatabaseConnector().getDocumentsCollection();
     }
 
+    //загрузить в БД
     public static boolean uploadDocumentToDatabase(Document document) {
         try {
             collection.insertOne(document);
@@ -28,16 +33,19 @@ public class DocumentManager {
         }
     }
 
+    //все доки пользователя
     public static ArrayList<Document> getAllDocumentsForCurrentUser() {
         Bson filter = eq("userId", User.get().getId());
         return collection.find(filter).into(new ArrayList<>());
     }
 
+    //документ по имени
     public static Document getDocumentByName(String name) {
         Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
         return collection.find(filter).first();
     }
 
+    //удалить документ
     public static boolean deleteDocument(String name) {
         Bson filter = and(eq("userId", User.get().getId()), eq("name", name));
         return collection.deleteOne(filter).wasAcknowledged();
