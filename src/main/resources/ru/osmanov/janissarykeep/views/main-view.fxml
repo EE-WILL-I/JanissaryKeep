@@ -14,7 +14,7 @@
                         <children>
                             <VBox fx:id="vbox_profile_content" alignment="CENTER" prefHeight="414.0" prefWidth="556.0" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
                               <children>
-                                   <Label fx:id="lbl_profile_title" text="Здравтсвуйте" />
+                                   <Label fx:id="lbl_profile_title" text="Здравствуйте" />
                                    <Button onAction="#onUpdateProfileButtonClick" text="Изменить пароль" />
                                  <Button layoutX="353.0" layoutY="199.0" onAction="#onDeleteProfileButtonClick" text="Удалить профиль" />
                                  <Button layoutX="353.0" layoutY="177.0" onAction="#onExitButtonClick" text="Выйти" />

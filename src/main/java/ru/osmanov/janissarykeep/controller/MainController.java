@@ -21,7 +21,7 @@ import java.util.List;
 public class MainController {
     public static MainController instance;
     @FXML
-    protected Label lbl_user, lbl_file_name;
+    protected Label lbl_user, lbl_file_name, lbl_profile_title;
     @FXML
     private TextField in_doc_name;
     @FXML
@@ -41,6 +41,7 @@ public class MainController {
         inputDialog.setTitle("Обновить пароль");
         String userId = Application.getInstance().getLoggedUser().getId();
         lbl_user.setText(userId);
+        lbl_profile_title.setText("Здравствуйте, "+userId);
         resetCreateTab();
         instance = this;
     }
