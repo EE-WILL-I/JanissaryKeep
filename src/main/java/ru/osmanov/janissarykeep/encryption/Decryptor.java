@@ -6,11 +6,14 @@ import org.bson.internal.Base64;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 /**
  Расшифровка файлов здесь
  * **/
 public class Decryptor {
+    private static final String SYSTEM_KEY = "bezopasnost";
+
     //расшифровываем файл из документа с ключем
     public static File decryptDocument(Document document, String key, File outFile) throws Exception {
         //берем строку с данными
@@ -30,6 +33,12 @@ public class Decryptor {
             return outFile;
         }
         throw new IOException("Can't write to:" + outFile.getAbsolutePath());
+    }
+
+    public static String decryptKey(String encryptedKey) throws Exception {
+        byte[] encodedBytes = decryptString(encryptedKey);
+        byte[] decodedBytes = decryptFile(encodedBytes, SYSTEM_KEY);
+        return new String(decodedBytes, StandardCharsets.UTF_8);
     }
 
     //расшифровываем байты

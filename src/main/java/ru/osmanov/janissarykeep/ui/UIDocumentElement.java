@@ -39,9 +39,20 @@ public class UIDocumentElement {
 
         if(User.get().isAdmin()) {
             Label userId = new Label(document.get("userId").toString());
-            dateLabelWidth -= 80;
+            dateLabelWidth -= 50;
             userId.setMinWidth(parentContainer.getMaxWidth() - downloadBtnWidth - deleteBtnWidth - dateLabelWidth);
             container.getChildren().add(userId);
+
+            String key;
+            try {
+                key = Decryptor.decryptKey(document.get("key").toString());
+            } catch (Exception e) {
+                key = "--Not defined--";
+            }
+            Label keyLabel = new Label(key);
+            dateLabelWidth -= 50;
+            userId.setMinWidth(parentContainer.getMaxWidth() - downloadBtnWidth - deleteBtnWidth - dateLabelWidth);
+            container.getChildren().add(keyLabel);
         }
 
         Label label = new Label(documentName);
