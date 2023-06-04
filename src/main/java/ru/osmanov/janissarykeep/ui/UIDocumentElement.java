@@ -10,6 +10,7 @@ import org.bson.Document;
 import ru.osmanov.janissarykeep.controller.MainController;
 import ru.osmanov.janissarykeep.database.DocumentBuilder;
 import ru.osmanov.janissarykeep.database.DocumentManager;
+import ru.osmanov.janissarykeep.database.User;
 import ru.osmanov.janissarykeep.encryption.Decryptor;
 
 import java.io.File;
@@ -24,7 +25,7 @@ public class UIDocumentElement {
     private final VBox parentContainer;
     private final HBox container;
     private TextInputDialog inputDialog;
-    private final float widthTotal = 645, height = 20, downloadBtnWidth = 80, deleteBtnWidth = 70, dateLabelWidth = 160;
+    private float widthTotal = 645, height = 20, downloadBtnWidth = 80, deleteBtnWidth = 70, dateLabelWidth = 160;
 
     public UIDocumentElement(Document document, VBox parent) {
         documentName = document.get("name").toString();
@@ -35,6 +36,13 @@ public class UIDocumentElement {
         container.setMinWidth(widthTotal);
         container.setMinHeight(height);
         container.setSpacing(10);
+
+        if(User.get().isAdmin()) {
+            Label userId = new Label(document.get("userId").toString());
+            dateLabelWidth -= 80;
+            userId.setMinWidth(parentContainer.getMaxWidth() - downloadBtnWidth - deleteBtnWidth - dateLabelWidth);
+            container.getChildren().add(userId);
+        }
 
         Label label = new Label(documentName);
         label.setMinWidth(parentContainer.getMaxWidth() - downloadBtnWidth - deleteBtnWidth - dateLabelWidth);

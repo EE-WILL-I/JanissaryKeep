@@ -9,12 +9,22 @@ import ru.osmanov.janissarykeep.Application;
  * **/
 public class User {
     private String id;
-    public User(String id) {
+    private boolean isAdmin;
+
+    public User(String id, boolean isAdmin) {
         this.id = id;
+        this.isAdmin = isAdmin;
     }
+
+    public User(String id) {
+        this(id, false);
+    }
+
     public String getId() {
         return id;
     }
+
+    public boolean isAdmin() { return isAdmin; }
 
     public static User get() {
         return Application.getInstance().getLoggedUser();

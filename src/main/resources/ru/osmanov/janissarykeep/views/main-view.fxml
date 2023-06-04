@@ -6,7 +6,7 @@
 <AnchorPane fx:id="ap_app" minHeight="400.0" minWidth="700.0" prefHeight="425.0" prefWidth="757.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.osmanov.janissarykeep.controller.MainController">
    <AnchorPane fx:id="ap_content" layoutX="10.0" layoutY="9.0" minHeight="350.0" minWidth="500.0" prefHeight="406.0" prefWidth="739.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-         <TabPane prefHeight="386.0" prefWidth="737.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <TabPane fx:id="tabs" prefHeight="386.0" prefWidth="737.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <tabs>
              <Tab text="Профиль">
                <content>
@@ -51,7 +51,7 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                         <children>
-                            <Label fx:id="lbl_create_title" text="Создать и сохранить зашифрованный документ" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                            <Label fx:id="lbl_create_title" layoutX="29.0" layoutY="10.0" text="Создать и сохранить зашифрованный документ" AnchorPane.leftAnchor="29.0" AnchorPane.topAnchor="10.0" />
                             <VBox fx:id="vbox_create_content" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0">
                               <children>
                                  <Label fx:id="lbl_file_name" text="Выберите файл для шифрования" />
@@ -62,6 +62,34 @@
                   </AnchorPane>
                </content>
              </Tab>
+               <Tab fx:id="createTab" text="Создать профиль">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                           <Label fx:id="lbl_create_title1" text="Создать нового пользователя" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                           <VBox fx:id="vbox_create_profile" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" >
+                                <children>
+                                    <Label fx:id="loginText" text="Введите логин и пароль" />
+                                        <TextField fx:id="fieldLogin" text="login" />
+                                        <TextField fx:id="fieldPassword" text="password" />
+                                        <CheckBox fx:id="adminCheckBox" text="Имеет права администратора"/>
+                                       <Button layoutX="46.0" layoutY="194.0" onAction="#onCreateProfileButtonClick" text="Создать профиль" />
+                                </children>
+                           </VBox>
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
+               <Tab fx:id="profilesTap" text="Профили пользователей">
+                  <content>
+                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                           <Label fx:id="lbl_create_title11" text="Просмотр и изменение профилей" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                           <VBox fx:id="vbox_manage_profiles" alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="40.0" />
+                        </children>
+                     </AnchorPane>
+                  </content>
+               </Tab>
            </tabs>
          </TabPane>
          <Label fx:id="lbl_user" layoutX="14.0" layoutY="383.0" prefHeight="17.0" prefWidth="494.0" text="Label" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="15.0" />

@@ -29,17 +29,4 @@ public class AuthorizationController {
             welcomeText.setText("Неверный логин или пароль");
         }
     }
-    @FXML
-    //Обработчик кнопки создать профиль
-    protected void onCreateButtonClick() {
-        if(Application.getInstance().userLogging(fieldLogin.getText(), fieldPassword.getText())) {
-            welcomeText.setText("Такой профиль уже существует");
-        } else {
-            if(Authenticator.create(fieldLogin.getText(), fieldPassword.getText())) {
-                welcomeText.setText("Профиль успешно создан");
-            } else {
-                welcomeText.setText("Пароль слишком слабый");
-            }
-        }
-    }
 }

@@ -11,6 +11,7 @@ import ru.osmanov.janissarykeep.database.User;
 import ru.osmanov.janissarykeep.ui.UIDocumentElement;
 import ru.osmanov.janissarykeep.database.DocumentManager;
 import ru.osmanov.janissarykeep.encryption.Encryptor;
+import ru.osmanov.janissarykeep.ui.UIUserElement;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,9 +26,22 @@ public class MainController {
     @FXML
     private TextField in_doc_name;
     @FXML
-    private VBox vbox_storage_content, vbox_create_content;
+    private VBox vbox_storage_content, vbox_create_content, vbox_manage_profiles;
     @FXML
     private Button btn_upload_file;
+    @FXML
+    //Поле для логина
+    private TextField fieldLogin;
+    @FXML
+    //поле для пароля
+    private TextField fieldPassword;
+    @FXML
+    private CheckBox adminCheckBox;
+    @FXML
+    private TabPane tabs;
+    @FXML
+    private Tab profilesTap, createTab;
+
     private FileChooser storageFileChooser;
     private List<UIDocumentElement> documents;
     private TextInputDialog inputDialog;
@@ -42,6 +56,16 @@ public class MainController {
         String userId = Application.getInstance().getLoggedUser().getId();
         lbl_user.setText(userId);
         lbl_profile_title.setText("Здравствуйте, "+userId);
+        if(User.get().isAdmin()) {
+            ArrayList<User> users = Authenticator.getAllUsers();
+            System.out.println(users);
+            for (User user : users) {
+                UIUserElement uiUserElement = new UIUserElement(user, vbox_manage_profiles);
+            }
+        } else {
+            tabs.getTabs().remove(profilesTap);
+            tabs.getTabs().remove(createTab);
+        }
         resetCreateTab();
         instance = this;
     }
@@ -125,10 +149,14 @@ public class MainController {
 
     //проверить хранилище
     protected void onStorageCheckButtonClick(String filter) {
-        ArrayList<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
+        ArrayList<Document> userDocuments;
+        if (User.get().isAdmin())
+            userDocuments = DocumentManager.getAllDocumentsAdmin();
+        else
+            userDocuments = DocumentManager.getAllDocumentsForUser(User.get().getId());
         StringBuilder builder = new StringBuilder("Документы:\n");
-        for(Document doc : userDocuments) {
-            if(!filter.isEmpty() && !doc.get("name").toString().contains(filter)) continue;
+        for (Document doc : userDocuments) {
+            if (!filter.isEmpty() && !doc.get("name").toString().contains(filter)) continue;
             documents.add(new UIDocumentElement(doc, vbox_storage_content));
             builder.append("Name: ").append(doc.get("name")).append("\n");
         }
@@ -152,7 +180,7 @@ public class MainController {
         alert.setHeaderText("Удалить все документы из хранилища?");
         alert.showAndWait();
         if(alert.getResult() == ButtonType.OK) {
-            List<Document> userDocuments = DocumentManager.getAllDocumentsForCurrentUser();
+            List<Document> userDocuments = DocumentManager.getAllDocumentsForUser(User.get().getId());
             for (Document doc : userDocuments) {
                 DocumentManager.deleteDocument(doc);
             }
@@ -173,18 +201,26 @@ public class MainController {
         }
     }
 
+    //фильтрация файлов
+    @FXML
+    protected void OnFilterChanged() {
+        String filter = in_doc_name.getText();
+        clearStorageDocuments();
+        onStorageCheckButtonClick(filter);
+    }
+
     //смена пароля
     @FXML
     protected void onUpdateProfileButtonClick() {
         inputDialog.setHeaderText("Введите старый пароль");
         inputDialog.setContentText("");
         inputDialog.showAndWait();
-        if (Authenticator.validate(User.get().getId(), inputDialog.getResult()) != null) {
+        if (inputDialog.getResult() != null && Authenticator.validate(User.get().getId(), inputDialog.getResult()) != null) {
             inputDialog.setHeaderText("Введите новый пароль");
             inputDialog.setContentText("");
             inputDialog.showAndWait();
             String newPassword = inputDialog.getResult();
-            if (!Authenticator.validatePassword(newPassword)) {
+            if (newPassword != null && !Authenticator.validatePassword(newPassword)) {
                 displayInfo("Пароль слишком простой.");
                 return;
             }
@@ -197,12 +233,22 @@ public class MainController {
         }
     }
 
-    //фильтрация файлов
     @FXML
-    protected void OnFilterChanged() {
-        String filter = in_doc_name.getText();
-        clearStorageDocuments();
-        onStorageCheckButtonClick(filter);
+    //Обработчик кнопки создать профиль
+    protected void onCreateProfileButtonClick() {
+        if (Authenticator.Find(fieldLogin.getText())) {
+            displayInfo("Такой профиль уже существует");
+        } else {
+            if (Application.getInstance().userLogging(fieldLogin.getText(), fieldPassword.getText())) {
+                displayInfo("Такой профиль уже существует");
+            } else {
+                if (Authenticator.create(fieldLogin.getText(), fieldPassword.getText(), adminCheckBox.isSelected())) {
+                    displayInfo("Профиль успешно создан");
+                } else {
+                    displayInfo("Пароль слишком слабый");
+                }
+            }
+        }
     }
 
     //удалиться

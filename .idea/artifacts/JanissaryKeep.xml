@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="JanissaryKeep">
+    <output-path>$PROJECT_DIR$/out/artifacts/JanissaryKeep</output-path>
+    <root id="root">
+      <element id="archive" name="JanissaryKeep.jar">
+        <element id="module-output" name="JanissaryKeep" />
+      </element>
+      <element id="library" level="project" name="Maven: com.dlsc.formsfx:formsfx-core:11.5.0" />
+      <element id="library" level="project" name="Maven: org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:win:19.0.2.1" />
+      <element id="library" level="project" name="Maven: at.favre.lib:hkdf:1.1.0" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-fxml:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.controlsfx:controlsfx:11.1.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:win:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-graphics:win:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-controls:win:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.openjfx:javafx-base:19.0.2.1" />
+      <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:3.12.12" />
+    </root>
+  </artifact>
+</component>

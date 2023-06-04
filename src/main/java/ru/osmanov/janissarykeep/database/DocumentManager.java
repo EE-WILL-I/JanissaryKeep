@@ -34,9 +34,14 @@ public class DocumentManager {
     }
 
     //все доки пользователя
-    public static ArrayList<Document> getAllDocumentsForCurrentUser() {
-        Bson filter = eq("userId", User.get().getId());
+    public static ArrayList<Document> getAllDocumentsForUser(String userId) {
+        Bson filter = eq("userId", userId);
         return collection.find(filter).into(new ArrayList<>());
+    }
+
+    //все доки
+    public static ArrayList<Document> getAllDocumentsAdmin() {
+        return collection.find().into(new ArrayList<>());
     }
 
     //документ по имени
